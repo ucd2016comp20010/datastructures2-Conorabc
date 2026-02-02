@@ -3,6 +3,7 @@ package project20280.list;
 import project20280.interfaces.List;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class SinglyLinkedList<E> implements List<E> {
 
@@ -77,25 +78,49 @@ public class SinglyLinkedList<E> implements List<E> {
 
     //@Override
     public int size() {
-        // TODO
-        return 0;
+        return size;
     }
 
     //@Override
     public boolean isEmpty() {
-        // TODO
-        return false;
+        if(head == null) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     @Override
     public E get(int position) {
-        // TODO
-        return null;
+        if(position < 0 || position >= size) {
+            throw new IndexOutOfBoundsException();
+        }
+            Node<E> node = head;
+            for (int i = 0; i < position; i++) {
+                node = node.getNext();
+            }
+            return node.getElement();
     }
 
     @Override
     public void add(int position, E e) {
+        if(position < 0 || position > size) {
+            throw new IndexOutOfBoundsException();
+        }
+        else if(position == 0 || size == 0){
+            addFirst(e);
+            return;
+        }
+        else {
+            Node<E> node = head;
+            for (int i = 0; i < position - 1; i++) {
+                node = node.next;
+            }
 
+            node.setNext(new Node<>(e, node.getNext()));
+            size++;
+        }
     }
 
 
@@ -107,45 +132,82 @@ public class SinglyLinkedList<E> implements List<E> {
 
     @Override
     public void addLast(E e) {
-        Node <E> newest = new Node<E>(e, null);
-        Node <E> last = head;
-        if (last.getNext() != null) {
+        Node<E> newest = new Node<E>(e, null);
+        if (isEmpty()) {
             head = newest;
         }
-        else {
-            while (last.getNext() != null) {
-                last = last.getNext();
-            }
-            last.setNext(newest);
+        else{
+            Node<E> last = head;
+        while (last.getNext() != null) {
+            last = last.getNext();
         }
+        last.setNext(newest);
+    }
         size++;
     }
 
     @Override
     public E remove(int position) {
-        // TODO
-        return null;
+        if(position < 0 || position >= size) {
+            throw new IndexOutOfBoundsException();
+        }
+        if (position == 0) {
+            return removeFirst();
+        }
+            Node<E> node = head;
+            for (int i = 0; i < position - 1; i++) {
+                node = node.getNext();
+            }
+            Node<E> toRemove = node.getNext();
+            E data = toRemove.getElement();
+            node.setNext(toRemove.getNext());
+            size--;
+            return data;
     }
 
     @Override
     public E removeFirst() {
-        // TODO
-        return null;
+        if(size == 0) {
+            return null;
+        }
+        else {
+            Node<E> data = head;
+            head = head.getNext();
+            size--;
+            return data.getElement();
+        }
+
     }
 
     @Override
     public E removeLast() {
-        // TODO
-        return null;
+        if(head == null) {
+            throw new NoSuchElementException();
+        }
+        if(size == 1) {
+            E data = head.getElement();
+            head = null;
+            size--;
+            return data;
+        }
+
+            Node<E> last = head;
+            for(int i = 0; i < size-2; i++) {
+                last = last.next;
+            }
+            E data = last.next.getElement();
+            last.next = null;
+            size--;
+            return data;
     }
 
     //@Override
     public Iterator<E> iterator() {
-        return new SinglyLinkedListIterator<E>();
+        return new SinglyLinkedListIterator();
     }
 
-    private class SinglyLinkedListIterator<E> implements Iterator<E> {
-        Node<E> curr = (Node<E>) head;
+    private class SinglyLinkedListIterator implements Iterator<E> {
+        Node<E> curr = head;
 
         @Override
         public boolean hasNext() {
