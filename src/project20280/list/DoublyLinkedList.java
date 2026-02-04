@@ -2,7 +2,9 @@ package project20280.list;
 
 import project20280.interfaces.List;
 
+import javax.swing.*;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class DoublyLinkedList<E> implements List<E> {
 
@@ -71,13 +73,26 @@ public class DoublyLinkedList<E> implements List<E> {
 
     @Override
     public void add(int i, E e) {
-        // TODO
+        if (i < 0 || i > size) {
+            throw new IndexOutOfBoundsException();
+        }
+        Node<E> pred = head;
+        for (int j = 0; j < i; j++) {
+            pred = pred.next;
+        }
+        addBetween(e, pred, pred.next);
     }
 
     @Override
     public E remove(int i) {
-        // TODO
-        return null;
+    if (i < 0 || i >= size) {
+        throw new IndexOutOfBoundsException();
+    }
+    Node<E> pred = head;
+    for (int k = 0; k < i; k++) {
+        pred = pred.next;
+    }
+        return remove(pred.next);
     }
 
     private class DoublyLinkedListIterator<E> implements Iterator<E> {
@@ -128,40 +143,24 @@ public class DoublyLinkedList<E> implements List<E> {
 
     @Override
     public E removeFirst() {
-        // TODO
-        return null;
+        if (isEmpty()) {throw new NoSuchElementException();}
+        return remove(head.next);
     }
 
     @Override
     public E removeLast() {
-        // TODO
-        return null;
+        if (isEmpty()) {throw new NoSuchElementException();}
+        return remove(tail.prev);
     }
 
     @Override
     public void addLast(E e) {
-        Node<E> newNode = new Node<E>(e, tail, null);
-        if (isEmpty()) {
-            head = tail = newNode;
-        }
-        else {
-            tail.next = newNode;
-            tail = newNode;
-        }
-        size++;
+        addBetween(e, tail.prev, tail);
     }
 
     @Override
     public void addFirst(E e) {
-        Node<E> newNode = new Node<E>(e, null, head);
-        if (isEmpty()) {
-            head = tail = newNode;
-        }
-        else{
-            head.prev = newNode;
-            head = newNode;
-        }
-        size++;
+        addBetween(e, head, head.next);
     }
 
     public String toString() {
