@@ -59,8 +59,14 @@ public class DoublyLinkedList<E> implements List<E> {
 
     @Override
     public E get(int i) {
-        // TODO
-        return null;
+        Node<E> current = head.next;
+        if (i < 0 || i >= size) {
+            throw new IndexOutOfBoundsException();
+        }
+            for(int j = 0; j < i; j++) {
+                current = current.next;
+            }
+        return current.data;
     }
 
     @Override
@@ -96,9 +102,15 @@ public class DoublyLinkedList<E> implements List<E> {
     }
 
     private E remove(Node<E> n) {
-        // TODO
-        return null;
+        if (n == null || n == head || n == tail || head == null || tail == null) {
+            return null;
+        }
+            n.prev.next = n.next;
+            n.next.prev = n.prev;
+            size--;
+        return n.getData();
     }
+
 
     public E first() {
         if (isEmpty()) {
@@ -108,8 +120,10 @@ public class DoublyLinkedList<E> implements List<E> {
     }
 
     public E last() {
-        // TODO
-        return null;
+        if (isEmpty()) {
+            return null;
+        }
+        return tail.prev.getData();
     }
 
     @Override
