@@ -23,7 +23,7 @@ class LinkedBinaryTreeTest {
     void testAddRoot() {
         LinkedBinaryTree<Integer> bt = new LinkedBinaryTree<Integer>();
 
-        Integer c = Integer.parseInt("0");
+        Integer c = 0;
         bt.addRoot(c);
         assertEquals(c, bt.root().getElement(), "root not added correctly");
     }
@@ -32,7 +32,7 @@ class LinkedBinaryTreeTest {
     void testAddLeft() {
         LinkedBinaryTree<Integer> bt = new LinkedBinaryTree<Integer>();
 
-        Integer c = Integer.parseInt("0");
+        Integer c = 0;
         bt.addRoot(c);
         bt.addLeft(bt.root(), 1);
         assertEquals(1, bt.left(bt.root()).getElement());
@@ -42,7 +42,7 @@ class LinkedBinaryTreeTest {
     void testAddRight() {
         LinkedBinaryTree<Integer> bt = new LinkedBinaryTree<Integer>();
 
-        Integer c = Integer.parseInt("0");
+        Integer c = 0;
         bt.addRoot(c);
         bt.addRight(bt.root(), 1);
         assertEquals(1, bt.right(bt.root()).getElement());
@@ -52,11 +52,11 @@ class LinkedBinaryTreeTest {
     void testRemove() {
         LinkedBinaryTree<Integer> bt = new LinkedBinaryTree<Integer>();
 
-        Integer c = Integer.parseInt("0");
+        Integer c = 0;
         bt.addRoot(c);
         bt.addRight(bt.root(), 1);
         Integer old = bt.remove(bt.right(bt.root()));
-        assertEquals(old, 1);
+        assertEquals(1, old);
         assertEquals(1, bt.size());
     }
 
